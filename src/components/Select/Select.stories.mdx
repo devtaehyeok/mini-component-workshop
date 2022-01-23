@@ -1,0 +1,38 @@
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+import Select from './Select';
+
+<Meta title="Select" component={Select} />
+
+# Select
+
+export const ManagedSelect = () => {
+  const [value, setValue] = React.useState('newest');
+  return (
+    <Select
+      label="Sort"
+      value={value}
+      onChange={(ev) => setValue(ev.target.value)}
+    >
+      <option value="newest">Newest Releases</option>
+      <option value="price">Price</option>
+      <option value="curated">Curated</option>
+    </Select>
+  );
+};
+
+<Story name="Default">
+  <ManagedSelect />
+</Story>
+
+# The sweet spot.
+
+1. The native `<select>` element has some limitation in customizing (ex) icon isn't customizable and varies by platform)
+2. Build it entirely from scratch, a daunting challenge when considering mobile devices and accessibility
+3. For inputs like `<select> and <input type="file">`ß, a third option exists: we can keep the native input, but set it to be invisible
+
+- We can create whatever presentation we want, and when the user clicks the form control, the real input will become activated, preserving the great cross-platform, accessible UX that these elements bring.
+
+# The adjacent sibling combinator
+
+1. Adjacent sibling combinator(`+`) apply styles to very next sibiling element after the element selected by selector group before `+`.
+2. General sibling combinator `(~)` apply styles to every sibiling element after the element selected by selector group before `~`.

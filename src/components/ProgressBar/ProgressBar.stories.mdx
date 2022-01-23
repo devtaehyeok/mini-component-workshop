@@ -1,0 +1,68 @@
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+import ProgressBar from './ProgressBar';
+
+<Meta
+  title="ProgressBar"
+  component={ProgressBar}
+  argTypes={{
+    value: {
+      control: {
+        type: 'number',
+        min: 0,
+        max: 100,
+      },
+    },
+    size: {
+      control: {
+        type: 'select',
+        options: ['small', 'medium', 'large'],
+      },
+    },
+  }}
+/>
+
+export const Template = (args) => <ProgressBar {...args} />;
+
+# ProgressBar : small
+
+<Story name="small" args={{ value: 50, size: 'small' }}>
+  {Template.bind({})}
+</Story>
+
+# ProgressBar : Default
+
+<Story name="medium" args={{ value: 70, size: 'medium' }}>
+  {Template.bind({})}
+</Story>
+
+# ProgressBar : Large
+
+<Story name="large" args={{ value: 90, size: 'large' }}>
+  {Template.bind({})}
+</Story>
+
+# Native ProgressBar vs Custom ProgressBar
+
+HTML comes with a `<progress>` element.
+[Progress element](https://css-tricks.com/html5-progress-element/)s can be styled,
+but only on Chrome and Safari.  
+Even then, support for animations is limited,  
+and there are likely many designs that will not be possible using native `<progress>`.  
+[This guide from MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_progressbar_role) helps us ensure we're complying with standards.
+
+# Trimmed corners
+
+We can use wrapping elements to trim corners of all children with overflow: hidden.
+This is useful in our ProgressBar.  
+because it allows us to round the edges of the `<Bar />` element in exactly the right way, as it approaches 100%.
+
+```jsx
+const Trimmer = styled.div`
+  border-radius: 16px;
+  overflow: hidden;
+`;
+```
+
+# Concentric circles
+
+When we nest elements that use border-radius, we need to tweak the outer element to be more curved than the inner one.

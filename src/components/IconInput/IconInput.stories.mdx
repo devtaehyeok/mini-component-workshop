@@ -1,0 +1,110 @@
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+import IconInput from './IconInput';
+
+<Meta
+  title="IconInput"
+  component={IconInput}
+  argTypes={{
+    placeholder: {
+      control: {
+        type: 'text',
+      },
+    },
+    icon: {
+      control: {
+        type: 'select',
+        options: ['search', 'at-sign'],
+      },
+    },
+    size: {
+      control: {
+        type: 'select',
+        options: ['small', 'large'],
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+    },
+  }}
+/>
+
+export const Template = (args) => <IconInput {...args} />;
+
+# IconInput
+
+<Story
+  name="small"
+  args={{
+    placeholder: 'Search…',
+    label: 'Search',
+    icon: 'search',
+    size: 'small',
+  }}
+>
+  {Template.bind({})}
+</Story>
+
+# IconInput : Large
+
+<Story
+  name="large"
+  args={{
+    placeholder: 'Search…',
+    label: 'Search',
+    icon: 'search',
+    size: 'large',
+  }}
+>
+  {Template.bind({})}
+</Story>
+
+# Alternative: Using composition
+
+In general, composition approaches like this work best when there are many variants and many differences between each variant; it can be hard to follow the logic otherwise.
+
+```jsx
+const IconInput = ({ label, icon, width = 250, size, ...delegated }) => {
+  const iconSize = size === 'small' ? 16 : 24;
+  const Input = size === 'small' ? SmallInput : LargeInput;
+  return (
+    <Wrapper>
+      <IconWrapper style={{ '--size': iconSize + 'px' }}>
+        <Icon id={icon} size={iconSize} />
+      </IconWrapper>
+      <Input
+        {...delegated}
+        style={{
+          '--width': width + 'px',
+        }}
+      />
+    </Wrapper>
+  );
+};
+/** We can use the placeholder pseudo-element
+ * to tweak the styles of our placeholder text: */
+const TextInput = styled.input`
+  width: var(--width);
+  border: none;
+  color: inherit;
+  font-weight: 700;
+  outline-offset: 2px;
+  &::placeholder {
+    font-weight: 400;
+    color: ${COLORS.gray500};
+  }
+`;
+const SmallInput = styled(TextInput)`
+  height: 24px;
+  font-size: ${14 / 16}rem;
+  border-bottom: 1px solid ${COLORS.black};
+  padding-left: 24px;
+`;
+const LargeInput = styled(TextInput)`
+  height: 36px;
+  font-size: ${18 / 16}rem;
+  border-bottom: 2px solid ${COLORS.black};
+  padding-left: 36px;
+`;
+```
